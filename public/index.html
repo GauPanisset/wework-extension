@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" href="%PUBLIC_URL%/wework-logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
@@ -25,6 +25,12 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+    <!--
+      Prevent `content.js` and `background.js` to be injected into the popup html.
+    -->
+    <%= htmlWebpackPlugin.tags.headTags.filter((tag) => tag.attributes.src !==
+    '/static/js/content.js' && tag.attributes.src !==
+    '/static/js/background.js').join('') %>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

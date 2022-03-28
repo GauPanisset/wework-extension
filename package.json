@@ -1,26 +1,33 @@
 {
   "name": "wework-extension",
-  "version": "0.1.0",
+  "description": "Extension for https://members.wework.com/ displaying the reservations of a company in the 'book a desk' page.",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.2",
-    "@testing-library/react": "^12.1.4",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.4.1",
-    "@types/node": "^16.11.26",
-    "@types/react": "^17.0.41",
-    "@types/react-dom": "^17.0.14",
+    "@craco/craco": "^6.4.3",
+    "luxon": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
-    "typescript": "^4.6.2",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.4",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/chrome": "^0.0.180",
+    "@types/jest": "^27.4.1",
+    "@types/luxon": "^2.3.1",
+    "@types/node": "^16.11.26",
+    "@types/react": "^17.0.41",
+    "@types/react-dom": "^17.0.14",
+    "html-webpack-plugin": "^5.5.0",
+    "typescript": "^4.6.2"
+  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "craco start",
+    "build": "INLINE_RUNTIME_CHUNK=false craco build",
+    "test": "craco test"
   },
   "eslintConfig": {
     "extends": [
