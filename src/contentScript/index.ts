@@ -3,19 +3,19 @@ import { MessageType } from 'enums'
 import { displayReservations } from './displayReservations'
 import { getAccessToken } from './getAccessToken'
 import { getElement } from './getElement'
-import { getLocale } from './getLocale'
+import { getUserPreferences } from './getUserPreferences'
 import { getReservations } from './getReservations'
 
 const addCollaboratorReservations = async () => {
   const accessToken = getAccessToken()
-  const locale = getLocale()
+  const { locale, companyUuid } = getUserPreferences()
 
   chrome.runtime.sendMessage({
     type: MessageType.NewLocale,
     payload: { locale },
   })
 
-  const reservations = await getReservations(accessToken)
+  const reservations = await getReservations(accessToken, companyUuid)
 
   console.log(reservations)
 

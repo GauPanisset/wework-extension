@@ -31,18 +31,15 @@ const parseReservation =
 /**
  * Fetch the reservations of the company Goshaba which start after the current date.
  * It also handle pagination if more than 100 reservations are booked.
- * @param accessToken JWT user access token.
+ * @param accessToken JWT user access token
+ * @param companyUuid Uuid of the user's company
  * @returns list of reservations.
  */
 export const getReservations = async (
-  accessToken: string
+  accessToken: string,
+  companyUuid: string
 ): Promise<Reservation[]> => {
   const currentDate = new Date().toISOString()
-  const companyUuid = process.env.REACT_APP_COMPANY_UUID
-  if (!companyUuid)
-    throw new Error(
-      `Missing companyUuid. Check 'REACT_APP_COMPANY_UUID' in the '.env' file.`
-    )
 
   const firstUrl = `https://rooms.wework.com/api/v7/reservations?filter[company_uuid]=${companyUuid}&page[size]=100&page[number]=1&filter[finish_gte]=${currentDate}&sort=start&include=user`
 
