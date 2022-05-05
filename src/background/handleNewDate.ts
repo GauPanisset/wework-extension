@@ -1,9 +1,7 @@
-import { DateTime } from 'luxon'
-
 import { MessageType } from 'enums'
 import { NewDateMessage } from 'interfaces'
 import { MessageHandler } from 'types'
-import { parseDate, groupByReservable } from 'utils'
+import { groupByReservable, isReservationActive, parseDate } from 'utils'
 
 export const handleNewDate: MessageHandler = (
   message,
@@ -18,20 +16,7 @@ export const handleNewDate: MessageHandler = (
   sendResponse(true)
 
   const groupedReservations = groupByReservable(
-    reservations.filter((reservation) => {
-      const reservationDate = DateTime.fromISO(reservation.start, {
-        zone: 'utc',
-      })
-      const diffWithSelectedDate = reservationDate
-        .diff(date, 'days')
-        .toObject().days
-
-      return (
-        diffWithSelectedDate !== undefined &&
-        0 <= diffWithSelectedDate &&
-        diffWithSelectedDate < 1
-      )
-    })
+    reservations.filter((reservation) => isReservationActive(reservation, date))
   )
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {

@@ -4,7 +4,7 @@ import { getElement } from './getElement'
 
 /**
  * Display the reservations of the given reservable.
- * It implements the design of the reservations list to add in the Wework reservable card.
+ * It implements the design of the reservations list to add in the WeWork reservable card.
  * @param reservableId id of the reservable (desk, room, ...)
  * @param reservations list of reservations on the given reservable id.
  */
@@ -31,5 +31,7 @@ export const displayReservations = async (
         .join(', ')}`
       inventoryCardInfo.appendChild(reservationInfo)
     }
+  } else {
+    console.error(`Can't find any inventory card with id ${reservableId}`)
   }
 }

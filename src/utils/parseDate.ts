@@ -31,18 +31,15 @@ const formatByLocale: Record<Locale, string> = {
  * @returns date in the ISO format (UTC)
  */
 export const parseDate = (date: string, locale: Locale) => {
-  let dateTime = DateTime.fromFormat(date, formatByLocale[locale], { locale })
+  let dateTime = DateTime.fromFormat(date, formatByLocale[locale], {
+    locale,
+    zone: 'utc',
+  })
 
   /**
-   * If the date can't be parsed, it's assumed to be now().
+   * If the date can't be parsed, it's assumed to be the current day.
    */
-  if (!dateTime.isValid)
-    dateTime = DateTime.now().set({
-      hour: 0,
-      minute: 0,
-      second: 0,
-      millisecond: 0,
-    })
+  if (!dateTime.isValid) dateTime = DateTime.utc().startOf('day')
 
-  return dateTime.setZone('utc')
+  return dateTime
 }
