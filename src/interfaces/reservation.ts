@@ -1,7 +1,9 @@
-import { User } from 'interfaces'
+import { Location, User } from 'interfaces'
 
 export interface Reservation {
-  reservableId: string
+  finish: string
+  location: Location
+  reservableUuid: string
   start: string
   user: User
 }

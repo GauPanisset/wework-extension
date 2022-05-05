@@ -1,35 +1,44 @@
 import { Reservation } from 'interfaces'
 
+import { getUser } from './getUser'
+
 /**
- * Transform the Wework representation of reservation to the representation used in this project.
+ * Transform the WeWork representation of reservation to the representation used in this project.
  * This function inject the users data in the function used to actually parse the reservations.
- * @param users list of Wework users
- * @returns function parsing the Wework reservations.
+ * @param users list of WeWork users
+ * @returns function parsing the WeWork reservations.
  */
 const parseReservation =
-  (users: any[]) =>
-  (reservation: any): Reservation => {
+  (accessToken: string, locations: any[]) =>
+  async (reservation: any): Promise<Reservation> => {
     const { attributes } = reservation
     if (!reservation.attributes)
       throw new Error(`Invalid reservation. Not 'attributes' field found`)
 
     const {
-      user_uuid: userId,
-      reservable_uuid: reservableId,
+      finish,
+      location_uuid: locationUuid,
+      reservable_uuid: reservableUuid,
       start,
+      user_uuid: userUuid,
     } = attributes
 
-    const foundUser = users.find((user) => user?.attributes?.uuid === userId)
-    const user = {
-      name: foundUser?.attributes?.name,
-      email: foundUser?.attributes?.email,
+    const foundLocation = locations.find(
+      (location) => location?.attributes?.uuid === locationUuid
+    )
+
+    const user = await getUser(accessToken, userUuid)
+
+    const location = {
+      address: foundLocation?.attributes?.address,
+      name: foundLocation?.attributes?.name,
     }
 
-    return { user, reservableId, start }
+    return { finish, location, reservableUuid, start, user }
   }
 
 /**
- * Fetch the reservations of the company Goshaba which start after the current date.
+ * Fetch the reservations of a given company which start after the current date.
  * It also handle pagination if more than 100 reservations are booked.
  * @param accessToken JWT user access token
  * @param companyUuid Uuid of the user's company
@@ -41,7 +50,7 @@ export const getReservations = async (
 ): Promise<Reservation[]> => {
   const currentDate = new Date().toISOString()
 
-  const firstUrl = `https://rooms.wework.com/api/v7/reservations?filter[company_uuid]=${companyUuid}&page[size]=100&page[number]=1&filter[finish_gte]=${currentDate}&sort=start&include=user`
+  const firstUrl = `https://rooms.wework.com/api/v7/reservations?filter[company_uuid]=${companyUuid}&page[size]=100&page[number]=1&filter[finish_gte]=${currentDate}&sort=start&include=location`
 
   const handlePagination = async (url: string): Promise<Reservation[]> => {
     const response = await fetch(url, {
@@ -53,9 +62,14 @@ export const getReservations = async (
 
     const { data, included, next } = await response.json()
 
-    const users = included.filter((element: any) => element.type === 'users')
+    const locations = included.filter(
+      (element: any) => element.type === 'locations'
+    )
 
-    const pageReservations = data.map(parseReservation(users))
+    const pageReservationsPromises = data.map(
+      parseReservation(accessToken, locations)
+    )
+    const pageReservations = await Promise.all(pageReservationsPromises)
 
     if (next) {
       const nextPageReservations = await handlePagination(next)

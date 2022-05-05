@@ -11,10 +11,10 @@ export const groupByReservable = (
   const groupedReservations = {} as Record<string, Reservation[]>
 
   for (const reservation of reservations) {
-    const { reservableId } = reservation
-    if (groupedReservations[reservableId])
-      groupedReservations[reservableId].push(reservation)
-    else groupedReservations[reservableId] = [reservation]
+    const { reservableUuid } = reservation
+    if (groupedReservations[reservableUuid])
+      groupedReservations[reservableUuid].push(reservation)
+    else groupedReservations[reservableUuid] = [reservation]
   }
 
   return groupedReservations
