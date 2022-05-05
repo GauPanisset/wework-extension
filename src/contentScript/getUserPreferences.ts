@@ -3,8 +3,7 @@ import { UserPreferences } from 'interfaces'
 const USER_PREFERENCES_LOCAL_STORAGE = 'ajs_user_traits'
 
 /**
- * Retrieve the user locale preference from the local storage.
- * @returns user locale
+ * Retrieve the user preferences from the local storage.
  */
 export const getUserPreferences = (): UserPreferences => {
   const stringLocalPreferences =
