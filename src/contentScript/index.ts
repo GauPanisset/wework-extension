@@ -7,7 +7,10 @@ import { getUserPreferences } from './getUserPreferences'
 import { getReservations } from './getReservations'
 
 const addCollaboratorReservations = async () => {
-  const accessToken = getAccessToken()
+  const accessToken = await getAccessToken()
+  if (!accessToken)
+    throw new Error(`Can't find any access token in LocalStorage with`)
+
   const { locale, companyUuid } = getUserPreferences()
 
   chrome.runtime.sendMessage({
