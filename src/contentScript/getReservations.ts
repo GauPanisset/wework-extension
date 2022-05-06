@@ -1,6 +1,15 @@
+import { ReservableType } from 'enums'
 import { Reservation } from 'interfaces'
 
 import { getUser } from './getUser'
+
+/**
+ * Map the reservable.type of WeWork with the ReservableType enum.
+ */
+const reservableType: Record<string, ReservableType> = {
+  conference_rooms: ReservableType.ConferenceRoom,
+  daily_desks: ReservableType.DailyDesk,
+}
 
 /**
  * Transform the WeWork representation of reservation to the representation used in this project.
@@ -9,7 +18,7 @@ import { getUser } from './getUser'
  * @returns function parsing the WeWork reservations.
  */
 const parseReservation =
-  (accessToken: string, locations: any[]) =>
+  (accessToken: string, locations: any[], reservables: any[]) =>
   async (reservation: any): Promise<Reservation> => {
     const { attributes } = reservation
     if (!reservation.attributes)
@@ -27,14 +36,24 @@ const parseReservation =
       (location) => location?.attributes?.uuid === locationUuid
     )
 
-    const user = await getUser(accessToken, userUuid)
+    const foundReservable = reservables.find(
+      (reservable) => reservable.attributes?.uuid === reservableUuid
+    )
 
     const location = {
       address: foundLocation?.attributes?.address,
       name: foundLocation?.attributes?.name,
     }
 
-    return { finish, location, reservableUuid, start, user }
+    const reservable = {
+      name: foundReservable?.attributes?.name,
+      type: reservableType[foundReservable?.type],
+      uuid: reservableUuid,
+    }
+
+    const user = await getUser(accessToken, userUuid)
+
+    return { finish, location, reservable, start, user }
   }
 
 /**
@@ -50,7 +69,7 @@ export const getReservations = async (
 ): Promise<Reservation[]> => {
   const currentDate = new Date().toISOString()
 
-  const firstUrl = `https://rooms.wework.com/api/v7/reservations?filter[company_uuid]=${companyUuid}&page[size]=100&page[number]=1&filter[finish_gte]=${currentDate}&sort=start&include=location`
+  const firstUrl = `https://rooms.wework.com/api/v7/reservations?filter[company_uuid]=${companyUuid}&page[size]=100&page[number]=1&filter[finish_gte]=${currentDate}&sort=start&include=location,reservable`
 
   const handlePagination = async (url: string): Promise<Reservation[]> => {
     const response = await fetch(url, {
@@ -65,9 +84,12 @@ export const getReservations = async (
     const locations = included.filter(
       (element: any) => element.type === 'locations'
     )
+    const reservables = included.filter((element: any) =>
+      Object.keys(reservableType).includes(element.type)
+    )
 
     const pageReservationsPromises = data.map(
-      parseReservation(accessToken, locations)
+      parseReservation(accessToken, locations, reservables)
     )
     const pageReservations = await Promise.all(pageReservationsPromises)
 
