@@ -69,8 +69,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log(message)
   if (message.type === MessageType.RenderReservations) {
     const groupedReservations = message.payload.reservations
-    for (const reservableId in message.payload.reservations) {
-      displayReservations(reservableId, groupedReservations[reservableId])
+    for (const reservableUuid in message.payload.reservations) {
+      displayReservations(reservableUuid, groupedReservations[reservableUuid])
     }
     sendResponse(true)
   }

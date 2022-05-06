@@ -19,13 +19,17 @@ const messageHandlers: Record<string, MessageHandler> = {
 
 const messageListener = (
   message: Message,
-  sender: chrome.runtime.MessageSender,
+  _sender: chrome.runtime.MessageSender,
   sendResponse: ResponseHandler
 ) => {
   console.log('Message', message)
 
   if (Object.values(MessageType).includes(message.type)) {
     state = messageHandlers[message.type](message, state, sendResponse)
+    /**
+     * Chrome Locale Storage is used to shared the global state with the popup.
+     */
+    chrome.storage.local.set(state)
   }
 }
 

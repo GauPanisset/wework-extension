@@ -1,9 +1,9 @@
 import { Reservation } from 'interfaces'
 
 /**
- * Group the reservations according to their reservableId.
+ * Group the reservations according to their reservableUuid.
  * @param reservations list of reservations
- * @returns Map of the reservations grouped by reservableId.
+ * @returns Map of the reservations grouped by reservableUuid.
  */
 export const groupByReservable = (
   reservations: Reservation[]
