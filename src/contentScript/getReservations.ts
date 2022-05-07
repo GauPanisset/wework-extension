@@ -45,6 +45,7 @@ const parseReservation =
     const location = {
       address: foundLocation?.attributes?.address,
       name: foundLocation?.attributes?.name,
+      timeZone: foundLocation?.attributes?.time_zone,
       uuid: locationUuid,
     }
 
@@ -56,7 +57,7 @@ const parseReservation =
 
     const user = await getUser(accessToken, userUuid)
 
-    return { finish, location, reservable, start, user }
+    return { dates: { finish, start }, location, reservable, user }
   }
 
 /**

@@ -1,9 +1,13 @@
 import { Location, Reservable, User } from 'interfaces'
 
-export interface Reservation {
+interface ReservationDates {
   finish: string
+  start: string
+}
+
+export interface Reservation {
+  dates: ReservationDates
   location: Location
   reservable: Reservable
-  start: string
   user: User
 }

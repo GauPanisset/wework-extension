@@ -4,21 +4,23 @@ import { Reservation } from 'interfaces'
 
 /**
  * Return the dates required to check if a reservation is active.
- *  * A reservation is active when the date to check at midday (12:00) is between its start date and its finish date.
  * @param reservation reservation to check
  * @param _date optionally the date to check
  */
 const transformParams = (reservation: Reservation, _date?: DateTime) => {
-  const date = _date || DateTime.utc()
-  const midDate = date.startOf('day').plus({ hours: 12 })
+  const { dates, location } = reservation
+  const { finish, start } = dates
+  const { timeZone } = location
 
-  /**
-   * Reservation dates are in UTC.
-   */
-  const startDate = DateTime.fromISO(reservation.start)
-  const finishDate = DateTime.fromISO(reservation.finish)
+  const date = (_date || DateTime.local()).setZone(timeZone)
 
-  return { finishDate, midDate, startDate }
+  const startDay = date.startOf('day')
+  const endDay = date.endOf('day')
+
+  const startDate = DateTime.fromISO(start).setZone(timeZone)
+  const finishDate = DateTime.fromISO(finish).setZone(timeZone)
+
+  return { startDay, endDay, startDate, finishDate }
 }
 
 /**
@@ -30,9 +32,9 @@ export const isReservationActive = (
   reservation: Reservation,
   date?: DateTime
 ): boolean => {
-  const { finishDate, midDate, startDate } = transformParams(reservation, date)
+  const { startDay, endDay, startDate } = transformParams(reservation, date)
 
-  return startDate <= midDate && midDate <= finishDate
+  return startDay <= startDate && startDate <= endDay
 }
 
 /**
@@ -44,9 +46,9 @@ export const isReservationActiveBefore = (
   reservation: Reservation,
   date?: DateTime
 ) => {
-  const { midDate, startDate } = transformParams(reservation, date)
+  const { endDay, startDate } = transformParams(reservation, date)
 
-  return startDate <= midDate
+  return startDate <= endDay
 }
 
 /**
@@ -58,7 +60,7 @@ export const isReservationActiveAfter = (
   reservation: Reservation,
   date?: DateTime
 ) => {
-  const { finishDate, midDate } = transformParams(reservation, date)
+  const { startDay, finishDate } = transformParams(reservation, date)
 
-  return midDate <= finishDate
+  return startDay <= finishDate
 }
