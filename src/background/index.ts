@@ -5,6 +5,7 @@ import { MessageHandler, ResponseHandler } from 'types'
 import { handleNewDate } from './handleNewDate'
 import { handleNewLocale } from './handleNewLocale'
 import { handleNewReservations } from './handleNewReservations'
+import { manageExtensionIcon } from './manageExtensionIcon'
 
 let state: GlobalState = {
   locale: Locale.FrFR,
@@ -34,3 +35,5 @@ const messageListener = (
 }
 
 chrome.runtime.onMessage.addListener(messageListener)
+
+manageExtensionIcon()

@@ -12,7 +12,7 @@
     "48": "wework-logo.png",
     "128": "wework-logo.png"
   },
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["activeTab", "storage", "tabs"],
   "host_permissions": ["https://*.wework.com/*"],
   "background": {
     "service_worker": "./static/js/background.js"

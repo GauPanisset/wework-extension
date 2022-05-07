@@ -10,6 +10,10 @@ const Wrapper = styled(Cell)`
   width: 120px;
 
   color: ${({ theme }) => theme.palette.primary.main};
+
+  & p {
+    width: 100%;
+  }
 `
 
 interface CalendarBodyRowHeadCellProps {
