@@ -2,7 +2,6 @@ import { DateTime } from 'luxon'
 import styled from 'styled-components'
 
 import CalendarBodyRow from 'components/molecules/CalendarBodyRow'
-
 import { Reservation } from 'interfaces'
 
 const Wrapper = styled.div`

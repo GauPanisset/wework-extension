@@ -12,4 +12,5 @@ interface Address {
 export interface Location {
   address: Address
   name: string
+  uuid: string
 }

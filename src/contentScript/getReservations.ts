@@ -14,7 +14,9 @@ const reservableType: Record<string, ReservableType> = {
 /**
  * Transform the WeWork representation of reservation to the representation used in this project.
  * This function inject the users data in the function used to actually parse the reservations.
- * @param users list of WeWork users
+ * @param accessToken JWT access token
+ * @param locations list of WeWork locations
+ * @param reservables list of WeWork reservables
  * @returns function parsing the WeWork reservations.
  */
 const parseReservation =
@@ -22,7 +24,7 @@ const parseReservation =
   async (reservation: any): Promise<Reservation> => {
     const { attributes } = reservation
     if (!reservation.attributes)
-      throw new Error(`Invalid reservation. Not 'attributes' field found`)
+      throw new Error(`Invalid reservation. No 'attributes' field found`)
 
     const {
       finish,
@@ -43,6 +45,7 @@ const parseReservation =
     const location = {
       address: foundLocation?.attributes?.address,
       name: foundLocation?.attributes?.name,
+      uuid: locationUuid,
     }
 
     const reservable = {

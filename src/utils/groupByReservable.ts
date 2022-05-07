@@ -1,4 +1,5 @@
 import { Reservation } from 'interfaces'
+import { ReservationMap } from 'types'
 
 /**
  * Group the reservations according to their reservable uuid.
@@ -7,8 +8,8 @@ import { Reservation } from 'interfaces'
  */
 export const groupByReservable = (
   reservations: Reservation[]
-): Record<string, Reservation[]> => {
-  const groupedReservations = {} as Record<string, Reservation[]>
+): ReservationMap => {
+  const groupedReservations: ReservationMap = {}
 
   for (const reservation of reservations) {
     const { reservable } = reservation
