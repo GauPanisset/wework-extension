@@ -1,9 +1,9 @@
 import { DateTime } from 'luxon'
 import styled from 'styled-components'
 
-import Avatar from 'components/atoms/Avatar'
 import CalendarBodyCell from 'components/molecules/CalendarBodyCell'
 import CalendarBodyRowHeadCell from 'components/molecules/CalendarBodyRowHeadCell'
+import HoverAvatar from 'components/molecules/HoverAvatar'
 import { Reservation } from 'interfaces'
 import { isReservationActive } from 'utils'
 
@@ -39,7 +39,10 @@ const CalendarBodyRow = ({ columns, reservations }: CalendarBodyRowProps) => {
           {reservations
             .filter((reservation) => isReservationActive(reservation, date))
             .map((reservation) => (
-              <Avatar key={reservation.user.uuid} user={reservation.user} />
+              <HoverAvatar
+                key={reservation.user.uuid}
+                user={reservation.user}
+              />
             ))}
         </CalendarBodyCell>
       ))}

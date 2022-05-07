@@ -1,3 +1,4 @@
+import React from 'react'
 import { Avatar as MuiAvatar } from '@mui/material'
 import styled from 'styled-components'
 
@@ -24,11 +25,17 @@ interface AvatarProps {
 /**
  * Render the avatar of a given user.
  * The letter in the avatar is based on the user's name.
+ *
+ * It has a forwardRef to be used with Tooltip.
  */
-const Avatar = ({ user }: AvatarProps): JSX.Element => {
-  const [firstName, lastName] = user.name.split(' ')
+const Avatar = React.forwardRef(
+  ({ user, ...props }: AvatarProps, ref: any): JSX.Element => {
+    const [firstName, lastName] = user.name.split(' ')
 
-  return <Wrapper>{`${firstName[0]}${lastName[0]}`}</Wrapper>
-}
+    return (
+      <Wrapper ref={ref} {...props}>{`${firstName[0]}${lastName[0]}`}</Wrapper>
+    )
+  }
+)
 
 export default Avatar
