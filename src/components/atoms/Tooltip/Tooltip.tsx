@@ -20,7 +20,7 @@ interface TooltipProps {
   /**
    * Text to display in the Tooltip.
    */
-  title: string
+  title: string | React.ReactElement
 }
 
 /**

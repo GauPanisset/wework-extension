@@ -42,6 +42,7 @@ const CalendarBodyRow = ({ columns, reservations }: CalendarBodyRowProps) => {
               <HoverAvatar
                 key={reservation.user.uuid}
                 reservable={reservation.reservable}
+                reservation={reservation}
                 user={reservation.user}
               />
             ))}
