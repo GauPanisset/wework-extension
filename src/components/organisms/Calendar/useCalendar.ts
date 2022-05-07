@@ -7,12 +7,13 @@ import {
   groupByLocation,
   isReservationActiveAfter,
   isReservationActiveBefore,
+  isWeekend,
 } from 'utils'
 
 /**
  * Number of columns to display in the Calendar.
  */
-const NUMBER_OF_COLUMNS = 7
+const NUMBER_OF_COLUMNS = 5
 
 /**
  * Filter the reservations that are not between the first and last date then group them by location.
@@ -34,6 +35,24 @@ const filterAndGroup = (
   const groupedReservations = groupByLocation(filteredReservations)
 
   return groupedReservations
+}
+
+/**
+ * Create a list of DateTime which are all business days.
+ * @param firstDate reference date to build the list
+ * @param length final length of the list
+ */
+const createColumns = (firstDate: DateTime, length: number): DateTime[] => {
+  const newColumns: DateTime[] = []
+
+  let offset = 1
+  while (newColumns.length < length) {
+    const newDate = firstDate.plus({ days: offset })
+    if (!isWeekend(newDate)) newColumns.push(newDate)
+    offset++
+  }
+
+  return newColumns
 }
 
 /**
@@ -90,9 +109,7 @@ const useCalendar = () => {
   /**
    * Calendar columns. It defines the period displayed in the Calendar.
    */
-  const columns = new Array(NUMBER_OF_COLUMNS)
-    .fill(0)
-    .map((_, index) => firstDate.plus({ days: index + 1 }))
+  const columns = createColumns(firstDate, NUMBER_OF_COLUMNS)
 
   const groupedReservations = filterAndGroup(
     reservations,

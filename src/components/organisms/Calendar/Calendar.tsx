@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   align-items: flex-end;
   gap: 8px;
 
-  padding: 16px;
+  padding: 8px;
 `
 
 /**
