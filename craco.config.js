@@ -1,6 +1,10 @@
 const { whenDev } = require('@craco/craco')
 const CracoAlias = require('craco-alias')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const createStyledComponentsTransformer =
+  require('typescript-plugin-styled-components').default
+
+const styledComponentsTransformer = createStyledComponentsTransformer()
 
 module.exports = {
   plugins: [
@@ -25,6 +29,21 @@ module.exports = {
           content: './src/contentScript/index.ts',
           background: './src/background/index.ts',
         }),
+        module: {
+          ...webpackConfig.module,
+          rules: [
+            ...webpackConfig.module.rules,
+            {
+              test: /\.tsx?$/,
+              loader: 'ts-loader',
+              options: {
+                getCustomTransformers: () => ({
+                  before: [styledComponentsTransformer],
+                }),
+              },
+            },
+          ],
+        },
         output: {
           ...webpackConfig.output,
           filename: 'static/js/[name].js',
@@ -38,8 +57,8 @@ module.exports = {
             (plugin) => !(plugin instanceof HtmlWebpackPlugin)
           ),
           /**
-           * This plugin inject all js file created. However, as `content.jsù and `background.js` should not be executed on the popup
-           * their injection is prevent here.
+           * This plugin inject all js file created. However, as `content.js and `background.js` should not be executed on the popup
+           * their injection should be prevent here.
            */
           new HtmlWebpackPlugin({
             inject: false,

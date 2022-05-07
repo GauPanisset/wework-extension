@@ -10,6 +10,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
+
+  padding: 16px;
 `
 
 /**

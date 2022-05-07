@@ -2,7 +2,7 @@ import React from 'react'
 import { DateTime } from 'luxon'
 
 import { Reservation } from 'interfaces'
-import { ReservationMap } from 'types'
+import { ReservationMap, StorageChanges } from 'types'
 import {
   groupByLocation,
   isReservationActiveAfter,
@@ -64,9 +64,7 @@ const useCalendar = () => {
 
       getReservationsFromStorage()
 
-      const storageListener = (changes: {
-        [key: string]: chrome.storage.StorageChange
-      }): void => {
+      const storageListener = (changes: StorageChanges): void => {
         if (changes?.reservations) {
           const newReservations: Reservation[] = changes?.reservations.newValue
 
