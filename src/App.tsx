@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@mui/material'
 
-import Background from 'components/atoms/Background'
+import Layout from 'components/atoms/Layout'
 import Calendar from 'components/organisms/Calendar'
 import { theme, GlobalStyle } from 'styles'
 
@@ -8,9 +8,9 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Background>
+      <Layout>
         <Calendar />
-      </Background>
+      </Layout>
     </ThemeProvider>
   )
 }

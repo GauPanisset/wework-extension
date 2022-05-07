@@ -11,7 +11,15 @@ const Wrapper = styled.div`
   align-items: center;
   gap: 8px;
 
+  /**
+   * We want to have no 'padding-bottom' when there are more calendar rows to show, that is why the Layout component has 'padding-bottom: 0'.
+   * But we want this 'padding-bottom' when the scroll is at its end, that is why the 'padding-bottom' has been added here.
+   */
+  padding-bottom: 8px;
+
   width: 100%;
+
+  overflow: scroll;
 `
 
 interface CalendarBodyProps {
