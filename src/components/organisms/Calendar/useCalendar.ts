@@ -104,7 +104,7 @@ const useCalendar = () => {
   /**
    * First date to display in the Calendar.
    */
-  const firstDate = DateTime.utc()
+  const firstDate = DateTime.local()
 
   /**
    * Calendar columns. It defines the period displayed in the Calendar.
@@ -117,7 +117,7 @@ const useCalendar = () => {
     firstDate.plus({ days: NUMBER_OF_COLUMNS - 1 })
   )
 
-  return { columns, groupedReservations }
+  return { columns, firstDate, groupedReservations }
 }
 
 export default useCalendar
