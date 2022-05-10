@@ -1,4 +1,4 @@
-import { ThemeProvider } from '@mui/material'
+import ThemeProvider from '@mui/material/styles/ThemeProvider'
 
 import Layout from 'components/atoms/Layout'
 import Calendar from 'components/organisms/Calendar'

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Avatar as MuiAvatar, Badge as MuiBadge } from '@mui/material'
+import MuiAvatar from '@mui/material/Avatar'
+import MuiBadge from '@mui/material/Badge'
 import styled, { keyframes } from 'styled-components'
 
 import { User } from 'interfaces'

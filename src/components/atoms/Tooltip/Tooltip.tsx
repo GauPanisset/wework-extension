@@ -1,4 +1,4 @@
-import { Tooltip as MuiTooltip } from '@mui/material'
+import MuiTooltip from '@mui/material/Tooltip'
 import styled from 'styled-components'
 
 /**
