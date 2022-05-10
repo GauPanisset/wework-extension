@@ -45,7 +45,7 @@ const filterAndGroup = (
 const createColumns = (firstDate: DateTime, length: number): DateTime[] => {
   const newColumns: DateTime[] = []
 
-  let offset = 1
+  let offset = 0
   while (newColumns.length < length) {
     const newDate = firstDate.plus({ days: offset })
     if (!isWeekend(newDate)) newColumns.push(newDate)
@@ -114,7 +114,7 @@ const useCalendar = () => {
   const groupedReservations = filterAndGroup(
     reservations,
     firstDate,
-    firstDate.plus({ days: NUMBER_OF_COLUMNS + 1 })
+    firstDate.plus({ days: NUMBER_OF_COLUMNS - 1 })
   )
 
   return { columns, groupedReservations }
