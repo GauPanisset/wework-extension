@@ -1,5 +1,6 @@
 import { Typography } from '@mui/material'
-import { AccessTimeRounded } from '@mui/icons-material'
+// This prevent to download the whole `@mui/icons-material` package
+import AccessTimeRounded from '@mui/icons-material/AccessTimeRounded'
 import { DateTime } from 'luxon'
 import styled from 'styled-components'
 
