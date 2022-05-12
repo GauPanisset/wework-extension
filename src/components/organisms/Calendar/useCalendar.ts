@@ -114,7 +114,7 @@ const useCalendar = () => {
   const groupedReservations = filterAndGroup(
     reservations,
     firstDate,
-    firstDate.plus({ days: NUMBER_OF_COLUMNS - 1 })
+    columns[columns.length - 1]
   )
 
   return { columns, firstDate, groupedReservations }
