@@ -1,3 +1,4 @@
+import uniqBy from 'lodash/uniqBy'
 import { DateTime } from 'luxon'
 import styled from 'styled-components'
 
@@ -51,17 +52,26 @@ const CalendarBodyRow = ({ columns, reservations }: CalendarBodyRowProps) => {
     <Wrapper>
       <CalendarBodyRowHeadCell location={reservations[0].location} />
       {columns.map((date) => {
-        const reservationsAtDate = reservations
-          .filter((reservation) => isReservationActive(reservation, date))
-          .sort(sortByReservableType)
+        /**
+         * Note that `_.uniqBy` keep the first occurrence. Thus by sorting by reservable type first,
+         * it is guaranteed to remove the `DailyDesk` duplicate and not the `ConferenceRoom` containing more information.
+         */
+        const reservationsAtDate = uniqBy(
+          reservations
+            .filter((reservation) => isReservationActive(reservation, date))
+            .sort(sortByReservableType),
+          'user.uuid'
+        )
 
         const shouldDisplayMoreAvatar =
           reservationsAtDate.length > MAX_AVATAR_BY_CELL
+        const indexOfLastDisplayedUser =
+          MAX_AVATAR_BY_CELL - (shouldDisplayMoreAvatar ? 1 : 0)
 
         return (
           <CalendarBodyCell key={`body-${date.toISODate({ format: 'basic' })}`}>
             {reservationsAtDate
-              .slice(0, MAX_AVATAR_BY_CELL - (shouldDisplayMoreAvatar ? 1 : 0))
+              .slice(0, indexOfLastDisplayedUser)
               .map((reservation) => (
                 <HoverUserAvatar
                   key={reservation.user.uuid}
@@ -71,7 +81,7 @@ const CalendarBodyRow = ({ columns, reservations }: CalendarBodyRowProps) => {
             {shouldDisplayMoreAvatar && (
               <HoverMoreAvatar
                 users={reservationsAtDate
-                  .slice(MAX_AVATAR_BY_CELL)
+                  .slice(indexOfLastDisplayedUser)
                   .map((reservation) => reservation.user)}
               />
             )}
