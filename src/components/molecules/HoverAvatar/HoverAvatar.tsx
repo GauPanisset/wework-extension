@@ -1,55 +1,29 @@
-import { DateTime } from 'luxon'
-import styled from 'styled-components'
-
 import Avatar from 'components/atoms/Avatar'
 import Tooltip from 'components/atoms/Tooltip'
-import ConferenceRoomDetails from 'components/molecules/ConferenceRoomDetails'
-import { ReservableType } from 'enums'
-import { Reservable, Reservation, User } from 'interfaces'
-
-const TooltipTitle = styled.div`
-  text-align: center;
-`
 
 interface HoverAvatarProps {
-  reservation: Reservation
-  reservable: Reservable
+  children: React.ReactNode
   /**
-   * User related to the avatar to display.
+   * Content displayed in the tooltip shown on hover.
    */
-  user: User
+  tooltipTitle: string | React.ReactElement
+  /**
+   * Wether a badge should be displayed on the bottom right corner or not.
+   */
+  withBadge?: boolean
 }
 
 /**
- * Render a user Avatar which can be hovered to display the full name of the attached user.
+ * Render an Avatar which can be hovered to display a Tooltip containing more information.
  */
 const HoverAvatar = ({
-  reservable,
-  reservation,
-  user,
+  children,
+  tooltipTitle,
+  withBadge = false,
 }: HoverAvatarProps): JSX.Element => {
-  const hasConferenceRoom = reservable.type === ReservableType.ConferenceRoom
-
   return (
-    <Tooltip
-      title={
-        <>
-          <TooltipTitle>{user.name}</TooltipTitle>
-          {hasConferenceRoom && (
-            <ConferenceRoomDetails
-              reservable={reservable}
-              startDate={DateTime.fromISO(reservation.dates.start).setZone(
-                reservation.location.timeZone
-              )}
-              finishDate={DateTime.fromISO(reservation.dates.finish).setZone(
-                reservation.location.timeZone
-              )}
-            />
-          )}
-        </>
-      }
-    >
-      <Avatar user={user} withBadge={hasConferenceRoom} />
+    <Tooltip title={tooltipTitle}>
+      <Avatar withBadge={withBadge}>{children}</Avatar>
     </Tooltip>
   )
 }

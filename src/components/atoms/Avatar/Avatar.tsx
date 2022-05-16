@@ -3,8 +3,6 @@ import MuiAvatar from '@mui/material/Avatar'
 import MuiBadge from '@mui/material/Badge'
 import styled, { keyframes } from 'styled-components'
 
-import { User } from 'interfaces'
-
 const Wrapper = styled(MuiAvatar)`
   height: 32px;
   width: 32px;
@@ -55,29 +53,21 @@ const StyledBadge = styled(MuiBadge)`
 `
 
 interface AvatarProps {
+  children: React.ReactNode
   /**
-   * User related to the avatar to display.
+   * Wether a badge should be displayed on the bottom right corner or not.
    */
-  user: User
   withBadge?: boolean
 }
 
 /**
- * Render the avatar of a given user.
- * The letter in the avatar is based on the user's name.
+ * Render an Avatar with optionally a primary Badge on the bottom right corner.
  *
  * It has a forwardRef to be used with Tooltip.
  */
 const Avatar = React.forwardRef(
-  (
-    { user, withBadge = false, ...props }: AvatarProps,
-    ref: any
-  ): JSX.Element => {
-    const [firstName, lastName] = user.name.split(' ')
-
-    const avatar = (
-      <Wrapper ref={ref} {...props}>{`${firstName[0]}${lastName[0]}`}</Wrapper>
-    )
+  ({ withBadge = false, ...props }: AvatarProps, ref: any): JSX.Element => {
+    const avatar = <Wrapper ref={ref} {...props} />
 
     if (withBadge)
       return (
