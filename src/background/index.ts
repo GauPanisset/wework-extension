@@ -5,7 +5,7 @@ import { MessageHandler, ResponseHandler } from 'types'
 import { handleNewDate } from './handleNewDate'
 import { handleNewLocale } from './handleNewLocale'
 import { handleNewReservations } from './handleNewReservations'
-import { createIconManager } from './createIconManager'
+import { initializeIconManager } from './initializeIconManager'
 
 let state: GlobalState = {
   locale: Locale.FrFR,
@@ -48,6 +48,6 @@ const messageListener = (
 }
 
 retrieveState()
-createIconManager()
+initializeIconManager()
 
 chrome.runtime.onMessage.addListener(messageListener)
