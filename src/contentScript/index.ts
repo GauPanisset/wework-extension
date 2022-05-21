@@ -6,7 +6,7 @@ import { getElement } from './getElement'
 import { getUserPreferences } from './getUserPreferences'
 import { getReservations } from './getReservations'
 
-const addCollaboratorReservations = async () => {
+const handleReservations = async () => {
   const accessToken = await getAccessToken()
   if (!accessToken)
     throw new Error(`Can't find any access token in LocalStorage with`)
@@ -63,7 +63,7 @@ const addCollaboratorReservations = async () => {
   }
 }
 
-addCollaboratorReservations()
+handleReservations()
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log(message)

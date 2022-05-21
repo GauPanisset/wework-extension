@@ -5,11 +5,24 @@ import { MessageHandler, ResponseHandler } from 'types'
 import { handleNewDate } from './handleNewDate'
 import { handleNewLocale } from './handleNewLocale'
 import { handleNewReservations } from './handleNewReservations'
-import { manageExtensionIcon } from './manageExtensionIcon'
+import { createIconManager } from './createIconManager'
 
 let state: GlobalState = {
   locale: Locale.FrFR,
   reservations: [],
+}
+
+/**
+ * Retrieve the global state from chrome local storage when the worker starts.
+ */
+const retrieveState = async (): Promise<void> => {
+  const localStorage = await chrome.storage.local.get([
+    'locale',
+    'reservations',
+  ])
+
+  console.log('Chrome Local Storage', localStorage)
+  Object.assign(state, localStorage)
 }
 
 const messageHandlers: Record<string, MessageHandler> = {
@@ -34,6 +47,7 @@ const messageListener = (
   }
 }
 
-chrome.runtime.onMessage.addListener(messageListener)
+retrieveState()
+createIconManager()
 
-manageExtensionIcon()
+chrome.runtime.onMessage.addListener(messageListener)

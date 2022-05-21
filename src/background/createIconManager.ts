@@ -17,9 +17,9 @@ const updateIcon = async (tabId: number): Promise<void> => {
 }
 
 /**
- * Logo manager
+ * Add listeners updating extension icon.
  */
-export const manageExtensionIcon = () => {
+export const createIconManager = () => {
   chrome.tabs.onActivated.addListener(
     (activeInfo: chrome.tabs.TabActiveInfo) => {
       const { tabId } = activeInfo
