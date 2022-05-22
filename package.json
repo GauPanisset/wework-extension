@@ -1,7 +1,7 @@
 {
   "name": "wework-extension",
   "description": "Extension for https://members.wework.com/ displaying the reservations of a company in the 'book a desk' page.",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.4.3",

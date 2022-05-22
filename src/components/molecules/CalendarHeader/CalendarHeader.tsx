@@ -1,9 +1,25 @@
 import { DateTime } from 'luxon'
 import styled from 'styled-components'
 
+import Cell from 'components/atoms/Cell'
 import CalendarHeaderCell from 'components/molecules/CalendarHeaderCell'
+import ThemeModeToggle from 'components/molecules/ThemeModeToggle'
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+
+const SettingsCell = styled(Cell)`
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    display: none;
+  }
+`
+
+const Row = styled.div`
   display: flex;
   flex-direction: row;
 
@@ -21,17 +37,22 @@ interface CalendarHeaderProps {
 
 /**
  * Render the header part of the Calendar.
- * It only displays a row of CalendarHeaderCell.
+ * It only displays the SettingsCell and a row of CalendarHeaderCell.
  */
 const CalendarHeader = ({ columns }: CalendarHeaderProps): JSX.Element => {
   return (
     <Wrapper>
-      {columns.map((date) => (
-        <CalendarHeaderCell
-          key={`head-${date.toISODate({ format: 'basic' })}`}
-          date={date}
-        />
-      ))}
+      <SettingsCell>
+        <ThemeModeToggle />
+      </SettingsCell>
+      <Row>
+        {columns.map((date) => (
+          <CalendarHeaderCell
+            key={`head-${date.toISODate({ format: 'basic' })}`}
+            date={date}
+          />
+        ))}
+      </Row>
     </Wrapper>
   )
 }

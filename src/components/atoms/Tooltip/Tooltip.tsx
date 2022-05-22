@@ -1,6 +1,8 @@
 import MuiTooltip from '@mui/material/Tooltip'
 import styled from 'styled-components'
 
+import { ThemeMode } from 'enums'
+
 /**
  * Helper component passing the styled-components className to the Popper component of the Tooltip.
  */
@@ -10,8 +12,20 @@ const TooltipToPopper = (props: any) => (
 
 const Wrapper = styled(TooltipToPopper)`
   & .MuiTooltip-tooltip {
-    background-color: ${({ theme }) => theme.palette.text.primary};
-    color: ${({ theme }) => theme.palette.primary.dark};
+    background-color: ${({ theme }) =>
+      theme.palette.mode === ThemeMode.Dark
+        ? theme.palette.text.primary
+        : theme.palette.background.paper};
+    color: ${({ theme }) =>
+      theme.palette.mode === ThemeMode.Dark
+        ? theme.palette.primary.dark
+        : theme.palette.primary.main};
+
+    border: ${({ theme }) =>
+      theme.palette.mode === ThemeMode.Dark
+        ? 'none'
+        : `1px solid ${theme.palette.text.primary}`};
+    box-sizing: border-box;
   }
 `
 

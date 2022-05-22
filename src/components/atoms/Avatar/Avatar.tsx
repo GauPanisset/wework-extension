@@ -3,12 +3,26 @@ import MuiAvatar from '@mui/material/Avatar'
 import MuiBadge from '@mui/material/Badge'
 import styled, { keyframes } from 'styled-components'
 
+import { ThemeMode } from 'enums'
+
 const Wrapper = styled(MuiAvatar)`
   height: 32px;
   width: 32px;
 
-  background-color: ${({ theme }) => theme.palette.text.primary};
-  color: ${({ theme }) => theme.palette.primary.dark};
+  background-color: ${({ theme }) =>
+    theme.palette.mode === ThemeMode.Dark
+      ? theme.palette.text.primary
+      : theme.palette.background.paper};
+  color: ${({ theme }) =>
+    theme.palette.mode === ThemeMode.Dark
+      ? theme.palette.primary.dark
+      : theme.palette.primary.main};
+
+  border: ${({ theme }) =>
+    theme.palette.mode === ThemeMode.Dark
+      ? 'none'
+      : `1px solid ${theme.palette.text.primary}`};
+  box-sizing: border-box;
 
   ${({ theme }) => theme.typography.body1}
   font-weight: bold;
@@ -33,7 +47,10 @@ const StyledBadge = styled(MuiBadge)`
     height: 10px;
     width: 10px;
 
-    background-color: ${({ theme }) => theme.palette.primary.dark};
+    background-color: ${({ theme }) =>
+      theme.palette.mode === ThemeMode.Dark
+        ? theme.palette.primary.dark
+        : theme.palette.primary.main};
     border: 1px solid ${({ theme }) => theme.palette.background.paper};
     border-radius: 50%;
 
@@ -46,7 +63,11 @@ const StyledBadge = styled(MuiBadge)`
       width: 100%;
       height: 100%;
       animation: 6s ${ripple} infinite ease-in-out;
-      border: 1px solid ${({ theme }) => theme.palette.primary.dark};
+      border: 1px solid
+        ${({ theme }) =>
+          theme.palette.mode === ThemeMode.Dark
+            ? theme.palette.primary.dark
+            : theme.palette.primary.main};
       border-radius: 50%;
     }
   }

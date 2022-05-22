@@ -1,9 +1,12 @@
 import { createGlobalStyle } from 'styled-components'
 import { createTheme } from '@mui/material/styles'
 
-import defaultTheme from './theme'
+import { ThemeMode } from 'enums'
 
-export const theme = createTheme(defaultTheme)
+import { darkTheme, lightTheme } from './theme'
+
+export const createThemeWithMode = (mode: ThemeMode) =>
+  createTheme(mode === ThemeMode.Dark ? darkTheme : lightTheme)
 
 export const GlobalStyle = createGlobalStyle`  
   body {

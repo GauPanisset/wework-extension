@@ -1,4 +1,4 @@
-import { Theme } from 'enums'
+import { ThemeMode } from 'enums'
 import { StorageChanges } from 'types'
 
 enum LogoState {
@@ -7,11 +7,11 @@ enum LogoState {
 }
 
 const iconPaths = {
-  [Theme.Light]: {
+  [ThemeMode.Light]: {
     [LogoState.Active]: `../../wework-logo-dark.png`,
     [LogoState.Disabled]: `../../wework-logo-dark-disabled.png`,
   },
-  [Theme.Dark]: {
+  [ThemeMode.Dark]: {
     [LogoState.Active]: `../../wework-logo-light.png`,
     [LogoState.Disabled]: `../../wework-logo-light-disabled.png`,
   },
@@ -20,19 +20,22 @@ const iconPaths = {
 /**
  * Update the icon based on the current tab.
  * The icon is `LogoState.Disabled` when the tab is not on the WeWork domain.
- * Handle the Theme color of the icon.
+ * Handle the ThemeMode color of the icon.
  * @param tabId id of the current tab
  */
-const updateIcon = async (tabId: number, _theme?: Theme): Promise<void> => {
+const updateIcon = async (
+  tabId: number,
+  _themeMode?: ThemeMode
+): Promise<void> => {
   const tab = await chrome.tabs.get(tabId)
   const { url } = tab
 
-  let theme: Theme
-  if (!_theme) {
-    const localStorage = await chrome.storage.local.get('theme')
-    theme = localStorage?.theme || Theme.Light
+  let themeMode: ThemeMode
+  if (!_themeMode) {
+    const localStorage = await chrome.storage.local.get('themeMode')
+    themeMode = localStorage?.themeMode || ThemeMode.Light
   } else {
-    theme = _theme
+    themeMode = _themeMode
   }
 
   const state = url?.match(/wework\.com/g)
@@ -40,7 +43,7 @@ const updateIcon = async (tabId: number, _theme?: Theme): Promise<void> => {
     : LogoState.Disabled
 
   chrome.action.setIcon({
-    path: iconPaths[theme][state],
+    path: iconPaths[themeMode][state],
     tabId,
   })
 }
@@ -61,11 +64,11 @@ export const initializeIconManager = () => {
   })
 
   chrome.storage.onChanged.addListener((changes: StorageChanges) => {
-    if (changes.theme) {
-      const theme: Theme = changes.theme.newValue
+    if (changes.themeMode) {
+      const themeMode: ThemeMode = changes.themeMode.newValue
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         const tabId = tabs[0]?.id as number
-        updateIcon(tabId, theme)
+        updateIcon(tabId, themeMode)
       })
     }
   })

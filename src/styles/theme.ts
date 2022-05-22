@@ -1,18 +1,6 @@
-const theme = {
-  palette: {
-    primary: {
-      contrastText: '#f6f7f9',
-      dark: '#666bcb',
-      light: '#cdcaff',
-      main: '#9999ff',
-    },
-    background: {
-      paper: '#171a21',
-    },
-    text: {
-      primary: '#f6f7f9',
-    },
-  },
+import { ThemeMode } from 'enums'
+
+const baseTheme = {
   shape: {
     borderRadius: 16,
   },
@@ -28,4 +16,40 @@ const theme = {
   },
 }
 
-export default theme
+export const darkTheme = {
+  ...baseTheme,
+  palette: {
+    mode: ThemeMode.Dark,
+    primary: {
+      contrastText: '#f6f7f9',
+      dark: '#666bcb',
+      light: '#cdcaff',
+      main: '#9999ff',
+    },
+    background: {
+      paper: '#171a21',
+    },
+    text: {
+      primary: '#f6f7f9',
+    },
+  },
+}
+
+export const lightTheme = {
+  ...baseTheme,
+  palette: {
+    mode: ThemeMode.Light,
+    primary: {
+      contrastText: '#f6f7f9',
+      dark: '#0000ca',
+      light: '#7142ff',
+      main: '#0000ff',
+    },
+    background: {
+      paper: '#ffffff',
+    },
+    text: {
+      primary: '#000000',
+    },
+  },
+}
